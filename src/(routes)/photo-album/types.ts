@@ -1,30 +1,30 @@
-export interface IPhotoAlbumMetaData {
+export interface IBasePhotoAlbumInfo {
     id: number;
     title: string;
     viewCount: number;
     likeCount: number;
+}
+
+export interface IPhotoAlbumMetaData extends IBasePhotoAlbumInfo {
     saveFileName: string;
     saveFilePath: string;
 }
 
-export interface IPhotoPostDto {
-    id: number;
-    title: string;
+export interface IPhotoPostDto extends IBasePhotoAlbumInfo {
     bodyContent: string;
-    viewCount: number;
-    likeCount: number;
     username: string;
     createdTime: number[];
     modifiedTime: number[];
     memberWritten: boolean;
 }
 
-export interface IExistingFileDto {
+export interface IPhotoAlbumFileDto {
     id: number;
     originalFileName: string;
     saveFileName: string;
     saveFilePath: string;
 }
+export interface IExistingFileDto extends IPhotoAlbumFileDto {}
 
 export interface IUploadedFileDto {
     id: string;
