@@ -24,5 +24,17 @@ const mockPhotoAlbum = (mock: MockAdapter) => {
       },
     ];
   });
+
+  // 상세 조회
+  mock.onGet(/\/api\/photo-post\/\d+/).reply((config) => {
+    const photoAlbumItem = photoAlbumData["photo-album-item"];
+
+    return [
+      200,
+      {
+        response: photoAlbumItem,
+      },
+    ];
+  });
 };
 export default mockPhotoAlbum;
