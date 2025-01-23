@@ -8,11 +8,7 @@ import getAvatarStyle from '../../../../_utils/getAvatarStyle';
 import LoadingSpinner from '../../../../_components/loadingSpinner/LoadingSpinner';
 import { ICommentDto } from '../../types';
 import { AxiosResponse } from 'axios';
-
-interface IModifiedCommentProps {
-    commentId: number;
-    updateValue: string;
-}
+import useUpdateComment from '../../_lib/postPhotoAlbumComment';
 
 interface ICommentProps {
     comment: ICommentDto;
@@ -140,29 +136,6 @@ export default function Comment({ comment }: ICommentProps) {
             </li>
         </>
     );
-}
-
-// REST: 댓글 수정
-function useUpdateComment() {
-    const queryClient = useQueryClient();
-    const { boardId } = useParams();
-
-    return useMutation<AxiosResponse, Error, IModifiedCommentProps>({
-        mutationFn: async ({ commentId, updateValue }) => {
-            const commentUpdateURL = `/api/comment/modify/${commentId}`;
-            return await axios.post(commentUpdateURL, {
-                content: updateValue,
-            });
-        },
-
-        // 클라이언트 업데이트
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['album', boardId] });
-        },
-        onError: () => {
-            window.alert('댓글 수정에 실패하였습니다.');
-        },
-    });
 }
 
 // REST: 댓글 삭제
