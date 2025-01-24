@@ -1,11 +1,9 @@
 // COMPONENT: 댓글 작성하는 입력칸(폼)
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { FiSend } from 'react-icons/fi';
 import LoadingSpinner from '../../../../_components/loadingSpinner/LoadingSpinner';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { INewCommentValues } from '../../types';
+import useCreateComment from '../../_lib/postPhotoAlbumComment';
 
 interface ICommentPostFormProps {
     isMetadataVisible: boolean;
@@ -58,27 +56,4 @@ export default function CommentPostForm({ isMetadataVisible }: ICommentPostFormP
             ) : null}
         </>
     );
-}
-
-// REST: 댓글 작성
-function useCreateComment() {
-    const queryClient = useQueryClient();
-    const { boardId } = useParams();
-
-    return useMutation({
-        mutationFn: async (newComment: string) => {
-            const commentPostURL = `/api/comment/${boardId}`;
-
-            return await axios.post(commentPostURL, {
-                content: newComment,
-            });
-        },
-        // 클라이언트 업데이트
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['album', boardId] });
-        },
-        onError: () => {
-            window.alert('댓글 작성에 실패했습니다.');
-        },
-    });
 }

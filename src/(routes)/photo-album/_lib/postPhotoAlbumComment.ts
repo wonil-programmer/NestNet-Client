@@ -1,33 +1,29 @@
-// POST: 댓글 수정
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
-interface IModifiedCommentProps {
-    commentId: number;
-    updateValue: string;
-}
-
-const useUpdateComment = () => {
+// POST: 댓글 작성
+const useCreateComment = () => {
     const queryClient = useQueryClient();
     const { boardId } = useParams();
 
-    return useMutation<AxiosResponse, Error, IModifiedCommentProps>({
-        mutationFn: async ({ commentId, updateValue }) => {
-            const commentUpdateURL = `/api/comment/modify/${commentId}`;
-            return await axios.post(commentUpdateURL, {
-                content: updateValue,
+    return useMutation({
+        mutationFn: async (newComment: string) => {
+            const commentPostURL = `/api/comment/${boardId}`;
+
+            return await axios.post(commentPostURL, {
+                content: newComment,
             });
         },
-
         // 클라이언트 업데이트
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['album', boardId] });
         },
+        // 에러 처리
         onError: () => {
-            window.alert('댓글 수정에 실패하였습니다.');
+            window.alert('댓글 작성에 실패했습니다.');
         },
     });
 };
 
-export default useUpdateComment;
+export default useCreateComment;
