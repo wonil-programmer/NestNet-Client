@@ -12,14 +12,19 @@ export default function CommentPostForm({ isMetadataVisible }: ICommentPostFormP
     const methods = useForm({
         mode: 'onBlur',
     });
-    const { mutate: createComment, isPending: isCommentPending, isSuccess } = useCreateComment();
+    const { mutate: createComment, isPending: isCommentPending, isSuccess, status } = useCreateComment();
 
     // 댓글 작성
-    const handleCommentSubmit: SubmitHandler<INewCommentValues> = ({ comment }) => {
-        createComment(comment);
-        if (isSuccess) {
-            methods.reset();
-        }
+    const handleCommentSubmit: SubmitHandler<INewCommentValues> = async ({ comment }) => {
+        createComment(comment, {
+            onSuccess: () => {
+                console.log('댓글 작성 성공');
+                methods.reset(); // form 리셋
+            },
+            onError: () => {
+                console.log('댓글 작성 실패');
+            },
+        });
     };
 
     return (
@@ -30,6 +35,7 @@ export default function CommentPostForm({ isMetadataVisible }: ICommentPostFormP
                         className='CommentForm flex w-full flex-auto flex-row items-center p-6 pl-10 pr-6'
                         onSubmit={methods.handleSubmit(handleCommentSubmit)}
                     >
+                        {/* 댓글 작성란 */}
                         {isCommentPending ? (
                             <div className='flex h-full w-full justify-center pb-1 pt-2'>
                                 <LoadingSpinner size={32} />
@@ -48,6 +54,7 @@ export default function CommentPostForm({ isMetadataVisible }: ICommentPostFormP
                                 />
                             </label>
                         )}
+                        {/* 등록 버튼 */}
                         <button className='CommentPostBtn h-10 w-10 text-secondary' disabled={isCommentPending}>
                             <FiSend size={32} />
                         </button>
