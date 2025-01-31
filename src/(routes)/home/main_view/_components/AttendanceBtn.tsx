@@ -7,6 +7,7 @@ export default function AttendanceBtn() {
 
     return (
         <button
+            aria-label='출석 체크'
             className={`relative h-[4rem] w-[4rem] cursor-pointer  
                 overflow-hidden rounded-full border-2 border-primary bg-white text-center text-primary 
                 outline-none transition-all before:absolute before:left-0
