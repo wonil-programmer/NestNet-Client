@@ -1,18 +1,15 @@
 // COMPONENT: 인생네컷 배너
-import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
 import SlidingPhotos from './_components/SlidingPhotos.jsx';
 import PhotoPostForm from './_components/PhotoPostForm.tsx';
-import { ISlidingPhoto } from '../type.tsx';
-import { LIFE4CUT_SIZE } from '../../../_constants/constants.ts';
+import { useGetLife4CutPhotos } from '../_lib/getLife4CutPhotos.ts';
 
-interface IProps {
-    inView: boolean;
+interface IPageProps {
+    inView: boolean; // 뷰포트 내 들어온지 여부
 }
 
-export default function Page({ inView }: IProps) {
-    // 옵저버 감지시 조회 api 호출
-    const { data: photos = [], isLoading: isPhotosLoading, isError } = useGetPhotos(inView);
+export default function Page({ inView }: IPageProps) {
+    // 옵저버 감지 시 조회 api 호출
+    const { data: photos = [], isLoading: isPhotosLoading, isError } = useGetLife4CutPhotos(inView);
 
     return (
         <>
@@ -40,19 +37,3 @@ export default function Page({ inView }: IProps) {
         </>
     );
 }
-
-// GET: 인생네컷 사진 조회
-const useGetPhotos = (inView: boolean) => {
-    return useQuery<ISlidingPhoto[]>({
-        queryKey: ['photo-zone'],
-        queryFn: async () => {
-            const photoZoneURL = `/api/life4cut?size=${LIFE4CUT_SIZE}`;
-            return await axios.get(photoZoneURL).then(res => {
-                return res.data.response.dtoList;
-            });
-        },
-        retry: 0,
-        gcTime: 0,
-        enabled: inView,
-    });
-};
