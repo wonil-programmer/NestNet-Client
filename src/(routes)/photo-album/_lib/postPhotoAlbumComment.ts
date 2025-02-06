@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
 // POST: 댓글 작성
-const useCreateComment = () => {
+const useCreatePhotoAlbumComment = (resetForm: () => void) => {
     const queryClient = useQueryClient();
     const { boardId } = useParams();
 
@@ -17,7 +17,9 @@ const useCreateComment = () => {
         },
         // 클라이언트 업데이트
         onSuccess: () => {
+            console.log('성공');
             queryClient.invalidateQueries({ queryKey: ['album', boardId] });
+            resetForm();
         },
         // 에러 처리
         onError: () => {
@@ -26,4 +28,4 @@ const useCreateComment = () => {
     });
 };
 
-export default useCreateComment;
+export default useCreatePhotoAlbumComment;

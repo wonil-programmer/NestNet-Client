@@ -3,7 +3,7 @@ import { FiSend } from 'react-icons/fi';
 import LoadingSpinner from '../../../../_components/loadingSpinner/LoadingSpinner';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { INewCommentValues } from '../../types';
-import useCreateComment from '../../_lib/postPhotoAlbumComment';
+import useCreatePhotoAlbumComment from '../../_lib/postPhotoAlbumComment';
 
 interface ICommentPostFormProps {
     isMetadataVisible: boolean;
@@ -12,19 +12,11 @@ export default function CommentPostForm({ isMetadataVisible }: ICommentPostFormP
     const methods = useForm({
         mode: 'onBlur',
     });
-    const { mutate: createComment, isPending: isCommentPending, isSuccess, status } = useCreateComment();
+    const { mutate: createComment, isPending: isCommentPending } = useCreatePhotoAlbumComment(methods.reset);
 
-    // 댓글 작성
+    // HANDLER: 댓글 작성
     const handleCommentSubmit: SubmitHandler<INewCommentValues> = async ({ comment }) => {
-        createComment(comment, {
-            onSuccess: () => {
-                console.log('댓글 작성 성공');
-                methods.reset(); // form 리셋
-            },
-            onError: () => {
-                console.log('댓글 작성 실패');
-            },
-        });
+        createComment(comment);
     };
 
     return (
