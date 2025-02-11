@@ -11,7 +11,7 @@ import DeleteBtn from './_components/DeleteBtn';
 import LikeBtn from './_components/LikeBtn';
 import MetadataBtn from './_components/MetadataBtn';
 import { IPhotoAlbumFileDto } from '../types';
-import useGetPhotoAlbumData from '../_lib/getPhotoAlbumItem';
+import useGetPhotoAlbumDetail from '../_lib/getPhotoAlbumDetail';
 
 export default function Page() {
     // 선택된 사진의 url
@@ -21,7 +21,7 @@ export default function Page() {
     const [isMetadataVisible, setIsMetadataVisible] = useState(false);
 
     const { boardId } = useParams<{ boardId: string }>();
-    const { data: albumData, isLoading: isAlbumLoading, status } = useGetPhotoAlbumData(boardId);
+    const { data: albumData, isLoading: isAlbumLoading, status } = useGetPhotoAlbumDetail(boardId);
 
     // 요청 성공시 사진 배열 첫번째 요소를 선택된 사진(현재 보고 있는 사진)으로 지정
     useEffect(() => {

@@ -10,7 +10,7 @@ interface IPhotoAlbumData {
     memberLiked: boolean;
 }
 
-const useGetPhotoAlbumData = (boardId: string) =>
+const useGetPhotoAlbumDetail = (boardId: string) =>
     useQuery<IPhotoAlbumData>({
         queryKey: ['album', boardId],
         queryFn: async () => {
@@ -23,4 +23,4 @@ const useGetPhotoAlbumData = (boardId: string) =>
         throwOnError: true,
     });
 
-export default useGetPhotoAlbumData;
+export default useGetPhotoAlbumDetail;
