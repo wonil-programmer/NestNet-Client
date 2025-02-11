@@ -18,10 +18,14 @@ export default memo(function DescriptionInputs() {
             {/* 제목 작성란 */}
             <label htmlFor='title'>
                 {errors.title?.message && errors?.title?.type === 'required' && (
-                    <span className={'m-1 text-sm text-secondary'}>※ {errors.title.message}</span>
+                    <span role='alert' className={'m-1 text-sm text-secondary'}>
+                        ※ {errors.title.message}
+                    </span>
                 )}
                 {errors.title?.message && errors?.title?.type === 'maxLength' && (
-                    <span className={'m-1 text-sm text-secondary'}>※ {errors.title.message}</span>
+                    <span role='alert' className={'m-1 text-sm text-secondary'}>
+                        ※ {errors.title.message}
+                    </span>
                 )}
                 <input
                     id='title'
@@ -39,10 +43,14 @@ export default memo(function DescriptionInputs() {
             {/* 본문 작성란 */}
             <label htmlFor='bodyContent'>
                 {errors.bodyContent?.message && errors?.bodyContent?.type === 'required' && (
-                    <span className={'m-1 text-sm text-secondary'}>※ {errors.bodyContent.message}</span>
+                    <span role='alert' className={'m-1 text-sm text-secondary'}>
+                        ※ {errors.bodyContent.message}
+                    </span>
                 )}
                 {errors.bodyContent?.message && errors?.bodyContent?.type === 'maxLength' && (
-                    <span className={'m-1 text-sm text-secondary'}>※ {errors.bodyContent.message}</span>
+                    <span role='alert' className={'m-1 text-sm text-secondary'}>
+                        ※ {errors.bodyContent.message}
+                    </span>
                 )}
                 <textarea
                     id='bodyContent'
