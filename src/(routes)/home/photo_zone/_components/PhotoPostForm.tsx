@@ -1,25 +1,25 @@
+// COMPONENT: 인생네컷 등록 폼
 import { useState, useRef } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import { MdOutlineCancel } from 'react-icons/md';
 import { TbCameraSelfie } from 'react-icons/tb';
-import axios, { AxiosError, AxiosResponse } from 'axios';
 import LoadingSpinner from '../../../../_components/loadingSpinner/LoadingSpinner';
-import isServerError from '../../../../_errors/isServerError';
+import { usePostLife4CutPhoto } from '../../_lib/postLife4CutPhoto';
 
 export default function PhotoPostForm() {
     const [file, setFile] = useState<File>(null);
     const [fileName, setFileName] = useState<string>('No selected file');
     const fileInputRef = useRef<HTMLInputElement>();
 
-    const { mutate: createPhoto, isPending: isPhotoPending } = usePostPhoto();
+    const { mutate: createPhoto, isPending: isPhotoPending } = usePostLife4CutPhoto();
 
-    // 사진 등록
+    // HANDLER: 사진 등록
     const handlePhotoCreate = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('simulateError', '401');
         createPhoto(formData);
         setFile(null);
     };
@@ -87,42 +87,4 @@ export default function PhotoPostForm() {
             </div>
         </form>
     );
-}
-
-// REST: 사진 등록
-function usePostPhoto() {
-    const queryClient = useQueryClient();
-
-    return useMutation<AxiosResponse, AxiosError, FormData>({
-        mutationFn: async fileFormData => {
-            const photoZoneURL = `/api/life4cut/save`;
-            return await axios.post(photoZoneURL, fileFormData, {
-                headers: { 'Content-Type': 'multipart/form-data' },
-            });
-        },
-        // 클라이언트 업데이트
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['photo-zone'] });
-        },
-        // 에러 처리
-        onError: async e => {
-            let errorMessage = '';
-            if (isServerError(e) && e.response.data && e?.response?.data?.error.message) {
-                errorMessage = e.response.data.error.message;
-                alert(errorMessage);
-
-                return;
-            }
-            if (e.response.status === 403) {
-                errorMessage = '권한이 없는 사용자입니다.';
-            } else if (e.response.status === 401) {
-                errorMessage = '사진은 로그인 후 올릴 수 있습니다!';
-            } else if (e.response.status === 404) {
-                errorMessage = '사진 등록에 실패하였습니다.';
-            } else if (e.response.status === 500) {
-                errorMessage = '사진 등록에 실패하였습니다. 관리자에게 문의해주세요.';
-            }
-            alert(errorMessage);
-        },
-    });
 }
