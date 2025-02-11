@@ -19,7 +19,6 @@ export default function PhotoPostForm() {
 
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('simulateError', '401');
         createPhoto(formData);
         setFile(null);
     };
