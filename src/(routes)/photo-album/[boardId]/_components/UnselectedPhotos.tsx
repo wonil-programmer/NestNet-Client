@@ -2,16 +2,16 @@
 import { SetStateAction, memo, Dispatch } from 'react';
 import { FaMagnifyingGlass } from 'react-icons/fa6';
 import { StringCombinator } from '../../../../_utils/StringCombinator';
-import { IExistingFileDto } from '../../types';
+import { IPhotoAlbumFileDto } from '../../types';
 
 interface IProps {
-    photos: IExistingFileDto[];
-    setSelectedPhoto: Dispatch<SetStateAction<IExistingFileDto>>;
+    photos: IPhotoAlbumFileDto[];
+    setSelectedPhoto: Dispatch<SetStateAction<IPhotoAlbumFileDto>>;
 }
 
 export default memo(function UnselectedPhotos({ photos, setSelectedPhoto }: IProps) {
     // 클릭된 사진으로 선택된 사진 변경하는 핸들러
-    const handleUnselectedPhotoClick = (clickedPhoto: IExistingFileDto) => {
+    const handleUnselectedPhotoClick = (clickedPhoto: IPhotoAlbumFileDto) => {
         setSelectedPhoto(clickedPhoto);
     };
 
