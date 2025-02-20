@@ -77,7 +77,13 @@ export default memo(function LinkBanner() {
                 })}
                 {sliderItems.map((item, idx) => {
                     return slideIdx === idx + 1 ? (
-                        <Link key={idx} to={item.link} className={`absolute h-full w-full`} />
+                        <Link
+                            aria-label={item.title}
+                            aria-live='polite'
+                            key={idx}
+                            to={item.link}
+                            className={`absolute h-full w-full`}
+                        />
                     ) : null;
                 })}
             </>
